@@ -1,28 +1,23 @@
-from question_model import Question
-from quiz_data import question_data
-from quiz_brain import QuizBrain
-from quiz_ui import QuizInterface
-from random import shuffle
-import html
+import requests
+from bs4 import BeautifulSoup
 
-question_bank = []
-for question in question_data:
-    choices = []
-    question_text = html.unescape(question["question"])
-    correct_answer = html.unescape(question["correct_answer"])
-    incorrect_answers = question["incorrect_answers"]
-    for ans in incorrect_answers:
-        choices.append(html.unescape(ans))
-    choices.append(correct_answer)
-    shuffle(choices)
-    new_question = Question(question_text, correct_answer, choices)
-    question_bank.append(new_question)
+# create a function to get price of cryptocurrency
 
 
-quiz = QuizBrain(question_bank)
+def get_latest_crypto_price(coin):
+    url = 'https://www.google.com/search?q=' + (coin) + 'price'
+    # make a request to the website
+    HTML = requests.get(url)
+    # Parsse the HTML
+    soup = BeautifulSoup(HTML.text, 'html.parser')
+    # find the current price
+    texti = soup.find('div', attrs={
+        'class': 'BNeawe iBp4i AP7Wnd'
+    }).find({
+        'div': 'BNeawe iBp4i AP7Wnd'
+    }).text
+    return texti
 
-quiz_ui = QuizInterface(quiz)
 
-
-print("You've completed the quiz")
-print(f"Your final score was: {quiz.score}/{quiz.question_no}")
+price = get_latest_crypto_price('bitcoin')
+print('BITCOIN price : ' + price)
