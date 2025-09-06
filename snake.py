@@ -1,4 +1,5 @@
-
+from tkinter import *
+import random,time
 
 class Snake(Tk):
     def __init__(self,*arge,**kwargs):
